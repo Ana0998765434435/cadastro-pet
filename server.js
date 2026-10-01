@@ -1,8 +1,17 @@
 const express = require('express');
 const cors = require('cors');
-const mysql = require('mysql/promise');
+const mysql = require('mysql2/promise');
 const multer = require('multer');
 const path = require('path');
+
+const app = express();
+
+
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({extended:true}));
+
+app.use('/uploads', express.static(path.join(__dirname,'uploads')));
 
 
 const db = mysql.creatPool({
@@ -48,3 +57,9 @@ app.post('api/pets', uppload.sigle('imagem'), async (req, res) => {
         return res.status(500).json({message:'Erro ao salvar no banco de dados'})
     }
 });
+
+const PORT = 3000;
+app.listen(PORT,() => {
+    console.log('Servidor a executar na porta ${PORT}');
+});
+
